@@ -7,9 +7,9 @@
 
 <?php
     
-require_once('AutoCRUD.php');
+require_once('PhpCRUD.php');
 
-$c = new AutoCRUD('tiedotteet',
+$c = new PhpCRUD('tiedotteet',
     array(
         'disabled' => array('kuva'),
         'hidden'   => array(),
