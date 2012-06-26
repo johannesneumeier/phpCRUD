@@ -1,0 +1,52 @@
+
+
+#autocrud table {    
+    border-collapse: separate;
+    border-spacing: 1px;
+    empty-cells: show;
+    
+    text-align: left;
+    vertical-align: top;
+}
+
+#autocrud th, #autocrud td {
+    padding: 3px 8px;
+}
+
+#autocrud th {
+    background: #999999;
+    border: 1px solid #AAAAAA;
+    color: #EEEEEE;
+}
+
+#autocrud td {    
+    border: 1px solid #DDDDDD;
+}
+
+#autocrud table textarea {
+    min-width: 30em;
+    min-height: 10em;
+}
+
+#autocrud table input[type="text"] {
+    max-width: 30em;
+}
+
+
+#autocrud .autocrud-listing td span.autocrud-cellwrapper {
+    display: inline-block;
+    max-height: 10em;
+    overflow: auto;
+}
+
+#autocrud .autocrud-pagination {
+    clear: both;
+    list-style-type: none;
+    padding: 0;
+}
+
+#autocrud .autocrud-pagination li {
+    list-style-type: none;
+    float: left;
+    padding: 5px;
+}
