@@ -6,7 +6,7 @@
     <body>
 
 <?php
-    
+// some new comment here
 require_once('PhpCRUD.php');
 
 $c = new PhpCRUD('tiedotteet',
