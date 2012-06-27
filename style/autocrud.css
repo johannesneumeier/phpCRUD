@@ -1,10 +1,7 @@
-
-
-#autocrud table {    
+#autocrud table {
     border-collapse: separate;
     border-spacing: 1px;
     empty-cells: show;
-    
     text-align: left;
     vertical-align: top;
 }
@@ -19,7 +16,7 @@
     color: #EEEEEE;
 }
 
-#autocrud td {    
+#autocrud td {
     border: 1px solid #DDDDDD;
 }
 
@@ -32,11 +29,10 @@
     max-width: 30em;
 }
 
-
 #autocrud .autocrud-listing td span.autocrud-cellwrapper {
     display: inline-block;
     max-height: 10em;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #autocrud .autocrud-pagination {
@@ -49,4 +45,39 @@
     list-style-type: none;
     float: left;
     padding: 5px;
+}
+
+.autocrud-col-sorting-icons {
+    font-size: 0.75em;
+    min-width: 5.5em;
+}
+
+.autocrud-form {
+}
+
+.autocrud-button {
+    border: 1px solid #CCCCCC;
+    background: #EEEEEE;
+    cursor: pointer;
+    margin: 0.2em;
+    padding: 0.2em;
+}
+
+.autocrud-button-create {
+}
+
+.autocrud-button-view-all {
+}
+
+.autocrud-button-update {
+}
+
+.autocrud-button-delete {
+}
+
+.autocrud-saved {
+    clear: left;
+    display: inline-block;
+    padding: 0.5em;
+    margin: 0.5em 0;
 }

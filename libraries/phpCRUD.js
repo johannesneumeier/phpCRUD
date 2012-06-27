@@ -1,21 +1,16 @@
 
-<style type="text/css">
-    @import url('style/autocrud.css');
-    @import url('libraries/jquery-ui-1.8.21.custom/css/ui-lightness/jquery-ui-1.8.21.custom.css');
-    @import url('libraries/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.css');
-</style>
-
-<script type="text/javascript" src="libraries/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="libraries/jquery.form.js"></script>
-<script type="text/javascript" src="libraries/jquery-ui-1.8.21.custom/js/jquery-ui-1.8.21.custom.min.js"></script>
-<script type="text/javascript" src="libraries/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"></script>
-
-<script type="text/javascript">
 $(document).ready(function() {
+    /*
+    $('.autocrud-button').button();
+    $('.autocrud-button-desc').button({icons: { primary: 'ui-icon-triangle-1-s'}, text: false});
+    $('.autocrud-button-asc').button({icons: { primary: 'ui-icon-triangle-1-n'}, text: false});
+    */
     $('.autocrud-form').ajaxForm({
         //alert('saved');
         success: function (data) {
-            $('.autocrud-form').append('<p>saved</p>');
+            $('.autocrud-form').append('<div class="autocrud-saved ui-state-highlight"><span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-info"></span>saved</div>');
+            $('.autocrud-saved').delay(500).fadeOut(function() { $(this).remove(); });
+            
             $('.autocrud-form input[type="file"]').each(function () {
                 var filename = $(this).val();
                 if (filename) {
@@ -37,9 +32,6 @@ $(document).ready(function() {
     });
     
     function updateHiddenDateField(dateText, inst) {
-        console.log(dateText);
-        console.log(inst);
-        console.log($(this).datepicker('getDate'));
         var val = $(this).val();
         var time = val.substring(val.lastIndexOf(' '));
         var dateString = '';
@@ -54,8 +46,3 @@ $(document).ready(function() {
         $(this).prev('input').val(dateString);
     }
 });
-
-</script>
-
-<form method="get"><input type="hidden" name="action" value="create" /><button>Create new</button></form>
-<form method="get"><button>View all</button></form>
