@@ -41,6 +41,10 @@ class PhpCRUD {
     
     var $fields       = array(); // internal list of all fields
     var $primaryField = '';      // internal helper to get primary key field TODO composite primary key
+    var $prettyLabels = TRUE;
+    var $appendToGet  = TRUE;
+    var $formAction   = '';
+    var $hiddenGets   = '';
     
     var $options = array(
         'hidden'   => array(),
@@ -50,7 +54,8 @@ class PhpCRUD {
         'select'   => array(),
         'radio'    => array(),
         'convert'  => array(),
-        'description' => array()        
+        'description' => array(),
+        'label'    => array()
     );
     
     var $hidden       = array(); // cols listed in this array are not shown at all
@@ -71,12 +76,7 @@ class PhpCRUD {
     var $dateFormatDatePicker = "dd.mm.yy";
     var $timeFormat = "H:i:s";
     
-    //function AutoCRUD($_table, $options = NULL) {
-    function AutoCRUD($_table = NULL, $options = NULL) {
-        $settings['dbhost'] = !empty($defaults['dbhost']) ? $defaults['dbhost'] : NULL;
-        $settings['dbuser'] = !empty($defaults['dbuser']) ? $defaults['dbuser'] : NULL;
-        $settings['dbname'] = !empty($defaults['dbname']) ? $defaults['dbname'] : NULL;
-        $settings['dbpass'] = !empty($defaults['dbpass']) ? $defaults['dbpass'] : NULL;
+    function AutoCRUD() {
     }
     
     function make() {
@@ -93,9 +93,21 @@ class PhpCRUD {
                             ? $this->baseDir . $this->lib_dir . 'jquery-ui-1.8.21.custom/css/ui-lightness/jquery-ui-1.8.21.custom.css' 
                             : $this->settings['jquery-ui-css'];
         
+        if ($this->appendToGet) {
+            $this->formAction = '?' . $_SERVER['QUERY_STRING'];
+            $hiddenInputFields = array();
+            $params = explode('&', $_SERVER['QUERY_STRING']);
+            foreach ($params as $param) {
+                $keyVal = explode('=', $param);
+                if ($keyVal[0] !== 'action' && $keyVal[1] !== 'primary') {
+                    $this->hiddenGets .= '<input type="hidden" 
+                        name="' . $keyVal[0] . '" value="' . $keyVal[1] . '" />';
+                }
+            }
+        }
+        
+        
         echo '<pre>';        
-        //print_r($this->settings);
-        //print_r($this->options);
         $this->connect();
         $this->getFields();        
         //print_r($this->fields);
@@ -273,8 +285,7 @@ class PhpCRUD {
         mysql_query($sql) or die(mysql_error());
     }
     
-    function listing() {
-        
+    function listing() {        
         require_once($this->includes_dir . 'listing.php');
     }
     
@@ -284,7 +295,7 @@ class PhpCRUD {
                 $this->edit($insert_id);
             }
         } else {
-            echo '<form method="post" class="autocrud-form">';
+            echo '<form method="post" class="autocrud-form" action="' . $this->formAction . '">';
             echo '<input type="hidden" name="send" value="1" />';
             $data = NULL;
             require_once($this->includes_dir . 'edit.php');
@@ -303,12 +314,12 @@ class PhpCRUD {
         $data = $this->getData($id);
         $data = $data[0];
         
-        echo '<form method="post" class="autocrud-form" enctype="multipart/form-data">';
-        echo '<input type="hidden" name="send" value="1" />';
+        echo '<form method="post" class="autocrud-form" enctype="multipart/form-data" action="' . $this->formAction . '">';
+        echo '<input type="hidden" name="send" value="1" />';        
         require_once($this->settings['baseDir'] . $this->includes_dir . 'edit.php');
         echo '<button class="autocrud-button autocrud-button-update">Update</button>';
         echo '</form>';
-        echo '<form method="get"><button class="autocrud-button autocrud-button-cancel">Cancel</button></form>';
+        echo '<form method="get">' . $this->hiddenGets . '<button class="autocrud-button autocrud-button-cancel">Cancel</button></form>';
     }
 
     function delete($id, $submit = FALSE) {        
@@ -318,7 +329,7 @@ class PhpCRUD {
         } else {        
             $data = $this->getData($id);
             $data = $data[0];
-            echo '<form method="post">';
+            echo '<form method="post" action="' . $this->formAction . '">';
             echo '<input type="hidden" name="send" value="1" />';
             require_once($this->settings['baseDir'] . $this->includes_dir . 'delete.php');
             echo '<button class="autocrud-button autocrud-button-update">Delete</button>';
@@ -346,7 +357,13 @@ class PhpCRUD {
     }
     
     function displayFieldName($fieldName) {
-        return ucfirst(strtolower(preg_replace('/([^a-zA-Z0-9])/i', ' ', $fieldName)));
+        if (in_array($fieldName, array_keys($this->options['label']))) {
+            return $this->options['label'][$fieldName];
+        } else if ($this->prettyLabels) {
+            return ucfirst(strtolower(preg_replace('/([^a-zA-Z0-9])/i', ' ', $fieldName)));            
+        } else {
+            return $fieldName;
+        }
     }
     
     function displayFieldData($fieldName, $fieldData) {
@@ -407,9 +424,11 @@ class PhpCRUD {
         <div class="autocrud-header">
             <form method="get">
                 <input type="hidden" name="action" value="create" />
+                ' . $this->hiddenGets . '
                 <button class="autocrud-button autocrud-button-create">Create new</button>
             </form>
             <form method="get">
+                ' . $this->hiddenGets . '
                 <button class="autocrud-button autocrud-button-view-all">View all</button>
             </form>
         </div>';

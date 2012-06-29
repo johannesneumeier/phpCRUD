@@ -37,9 +37,10 @@
                   
         <?php foreach ($this->settings['allowedActions'] as $action): if ($action !== 'create'): ?>
         <td>
-            <form method="get">
+            <form method="get" action="<?php echo $this->formAction; ?>">
                 <input type="hidden" name="action" value="<?php echo $action; ?>" />
                 <input type="hidden" name="primary" value="<?php echo $row[$this->primaryField]; ?>" />
+                <?php echo $this->hiddenGets; ?>
                 <button class="autocrud-button autocrud-button-<?php echo $action; ?>"><?php echo $action; ?></button>                
             </form>
         </td>
