@@ -1,6 +1,7 @@
 phpCRUD
 =======
 
+**... currently not under development ...**
 ... coming soon ...
 
 php-Create-Read-Update-Delete is a helper class and library collection to enable 
